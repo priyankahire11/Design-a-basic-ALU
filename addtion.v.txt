@@ -1,0 +1,42 @@
+module adder (
+    input [3:0] a,     // 4-bit input a
+    input [3:0] b,     // 4-bit input b
+    output [3:0] sum,  // 4-bit sum output
+    output carry_out   // carry-out output
+);
+    assign {carry_out, sum} = a + b;  // Add inputs a and b, with carry-out
+endmodule
+
+// Testbench to verify the adder module
+module testbench;
+    reg [3:0] a, b;   // 4-bit registers for inputs
+    wire [3:0] sum;   // 4-bit wire for sum
+    wire carry_out;   // carry-out wire
+
+    // Instantiate the adder module
+    adder uut (
+        .a(a),
+        .b(b),
+        .sum(sum),
+        .carry_out(carry_out)
+    );
+
+    initial begin
+        // Test the adder with different input values
+        a = 4'b0101; b = 4'b0011;  // Test 5 + 3
+        #10;
+        a = 4'b1111; b = 4'b0001;  // Test 15 + 1
+        #10;
+        a = 4'b1001; b = 4'b1011;  // Test 9 + 11
+        #10;
+        a = 4'b0000; b = 4'b0000;  // Test 0 + 0
+        #10;
+
+        // Finish the simulation
+        $finish;
+    end
+
+    initial begin
+        $monitor("At time %0t, a = %b, b = %b, sum = %b, carry_out = %b", $time, a, b, sum, carry_out);
+    end
+endmodule

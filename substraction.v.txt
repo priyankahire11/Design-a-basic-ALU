@@ -1,0 +1,42 @@
+module subtractor (
+    input [3:0] a,     // 4-bit input a
+    input [3:0] b,     // 4-bit input b
+    output [3:0] diff, // 4-bit difference output
+    output borrow_out  // borrow-out output
+);
+    assign {borrow_out, diff} = a - b;  // Subtract b from a, with borrow-out
+endmodule
+
+// Testbench to verify the subtractor module
+module testbench;
+    reg [3:0] a, b;   // 4-bit registers for inputs
+    wire [3:0] diff;  // 4-bit wire for difference
+    wire borrow_out;  // borrow-out wire
+
+    // Instantiate the subtractor module
+    subtractor uut (
+        .a(a),
+        .b(b),
+        .diff(diff),
+        .borrow_out(borrow_out)
+    );
+
+    initial begin
+        // Test the subtractor with different input values
+        a = 4'b1010; b = 4'b0011;  // Test 10 - 3
+        #10;
+        a = 4'b0111; b = 4'b1001;  // Test 7 - 9
+        #10;
+        a = 4'b1111; b = 4'b0110;  // Test 15 - 6
+        #10;
+        a = 4'b0000; b = 4'b0000;  // Test 0 - 0
+        #10;
+
+        // Finish the simulation
+        $finish;
+    end
+
+    initial begin
+        $monitor("At time %0t, a = %b, b = %b, diff = %b, borrow_out = %b", $time, a, b, diff, borrow_out);
+    end
+endmodule

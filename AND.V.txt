@@ -1,0 +1,39 @@
+module and_operation (
+    input [3:0] a,    // 4-bit input a
+    input [3:0] b,    // 4-bit input b
+    output [3:0] result  // 4-bit AND result
+);
+    assign result = a & b;  // Perform bitwise AND operation
+endmodule
+
+// Testbench to verify the AND operation module
+module testbench;
+    reg [3:0] a, b;     // 4-bit registers for inputs
+    wire [3:0] result;  // 4-bit wire for AND result
+
+    // Instantiate the and_operation module
+    and_operation uut (
+        .a(a),
+        .b(b),
+        .result(result)
+    );
+
+    initial begin
+        // Test the AND operation with different input values
+        a = 4'b1101; b = 4'b1011;  // Test AND operation: 1101 & 1011
+        #10;
+        a = 4'b1111; b = 4'b0000;  // Test AND operation: 1111 & 0000
+        #10;
+        a = 4'b1010; b = 4'b0101;  // Test AND operation: 1010 & 0101
+        #10;
+        a = 4'b1111; b = 4'b1111;  // Test AND operation: 1111 & 1111
+        #10;
+
+        // Finish the simulation
+        $finish;
+    end
+
+    initial begin
+        $monitor("At time %0t, a = %b, b = %b, result = %b", $time, a, b, result);
+    end
+endmodule
